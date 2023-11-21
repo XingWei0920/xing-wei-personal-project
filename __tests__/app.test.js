@@ -48,3 +48,49 @@ describe("/api/topics", () => {
   });
 
 })
+
+describe("/api/topics", () => {
+  test("GET:200 sends an the article object with articel_id", () => {
+    return request(app)
+      .get("/api/articles/1")
+      .expect(200)
+      .then((response) => {
+      const date = new Date('2020-07-09 21:11:00') 
+     
+        expect(response.body.article.length).toBe(1);
+        expect(response.body.article[0]).toEqual(expect.objectContaining({
+          article_id: 1,
+          title: "Living in the shadow of a great man",
+          topic: "mitch",
+          author: "butter_bridge",
+          body: "I find this existence challenging",
+          created_at: date.toISOString(),
+          votes: 100,
+          article_img_url:
+            "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+        }));
+        
+        response.body.article.forEach((article) => {
+          expect(typeof article.author).toBe("string");
+          expect(typeof article.title).toBe("string");
+          expect(typeof article.article_id).toBe("number");
+          expect(typeof article.body).toBe("string");
+          expect(typeof article.topic).toBe("string");
+          expect(typeof article.created_at).toBe("string");
+          expect(typeof article.votes).toBe("number");
+          expect(typeof article.article_img_url).toBe("string");
+          
+        });
+      });
+  });
+
+  test("GET:404 sends an NOT FOUND error if there the article_id does not exist", () => {
+    return request(app)
+      .get("/api/articles/20")
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).toBe("not found");
+      });
+  });
+
+})
