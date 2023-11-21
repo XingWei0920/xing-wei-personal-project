@@ -10,10 +10,3 @@ exports.selectTopics = (req, res, next) => {
         return result.rows;
       });
 }
-
-exports.selectAllEndpoints= (req, res, next) => {
-    return fs.readFile('endpoints.json')
-    .then((data)=>{
-        return data  })
-       
-}

@@ -4,7 +4,7 @@ const db = require("../db/connection");
 const seed = require("../db/seeds/seed");
 const endpoints= require("../endpoints.json")
 const { articleData, commentData, topicData, userData } = require("../db/data/test-data/index");
-const { expect } = require("@jest/globals");
+
 
 
 beforeEach(() => seed({ articleData, commentData, topicData, userData }));
@@ -56,8 +56,8 @@ describe("/api", () => {
       .get("/api")
       .expect(200)
       .then((response) => {
-        expect(typeof response.body.msg).toBe('object')
-        expect(response.body.msg).toEqual(endpoints);
+        expect(typeof response.body).toBe('object')
+        expect(response.body).toEqual(endpoints);
       });
   });
 

@@ -1,6 +1,7 @@
 const {
-    selectTopics, selectAllEndpoints
+    selectTopics,
   } = require("../models/server-models");
+  const endpoints= require("../endpoints.json")
 
 exports.getTopics = (req, res, next) => {
     selectTopics()
@@ -10,13 +11,9 @@ exports.getTopics = (req, res, next) => {
     .catch(next)
 }
 
-exports.getAllEndpoints= (req, res, next) => {
-    selectAllEndpoints()
-    .then((allEndpoints)=>{
-        console.log(JSON.parse(allEndpoints))
-        res.status(200).send({msg:JSON.parse(allEndpoints)});
-    })
-    .catch(next)
+exports.getAllEndpoints= (req, res, next) => 
+{
+    res.status(200).send(endpoints)
 }
 
 exports.handleFourOhFour = (req, res) => {
