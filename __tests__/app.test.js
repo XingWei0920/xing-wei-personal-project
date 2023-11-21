@@ -49,14 +49,13 @@ describe("/api/topics", () => {
 
 })
 
-describe("/api/topics", () => {
+describe("/api/article/:article_id", () => {
   test("GET:200 sends an the article object with articel_id", () => {
     return request(app)
       .get("/api/articles/1")
       .expect(200)
       .then((response) => {
       const date = new Date('2020-07-09 21:11:00') 
-     
         expect(response.body.article.length).toBe(1);
         expect(response.body.article[0]).toEqual(expect.objectContaining({
           article_id: 1,
@@ -84,7 +83,7 @@ describe("/api/topics", () => {
       });
   });
 
-  test("GET:404 sends an NOT FOUND error if there the article_id does not exist", () => {
+  test("GET:404 sends an NOT FOUND error if the article_id does not exist", () => {
     return request(app)
       .get("/api/articles/20")
       .expect(404)
