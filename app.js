@@ -1,5 +1,4 @@
 const express = require('express');
-// const { getTreasures, getTreasuresSorted} = require('./controllers/treasures-controllers');
 const { getTopics, handleFourOhFour  } = require('./controllers/server-controllers');
 const { handleCustomErrors, handlePsqErrors} = require('./errors/errors');
 

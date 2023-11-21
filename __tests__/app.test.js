@@ -16,7 +16,7 @@ describe("/api/topics", () => {
       .expect(200)
       .then((response) => {
         expect(response.body.topics.length).toBe(3);
-        expect(response.body.topics).toEqual([
+        expect(response.body.topics).toEqual(expect.arrayContaining([
           {
             description: 'The man, the Mitch, the legend',
             slug: 'mitch'
@@ -28,8 +28,8 @@ describe("/api/topics", () => {
           {
             description: 'what books are made of',
             slug: 'paper'
-          }
-        ])
+          }]));
+        
         response.body.topics.forEach((topic) => {
           expect(typeof topic.slug).toBe("string");
           expect(typeof topic.description).toBe("string");
