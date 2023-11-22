@@ -103,7 +103,6 @@ describe("/api/articles", () => {
           expect(response.body.articles).toBeSortedBy('created_at',{descending: true})
         });
       });
-  });
 
   test("GET:404 sends an NOT FOUND error if there is an invalid endpoint", () => {
     return request(app)
@@ -113,7 +112,6 @@ describe("/api/articles", () => {
         expect(response.body.msg).toBe("path not found");
       });
   });
-
 })
 
 describe("/api/article/:article_id", () => {
