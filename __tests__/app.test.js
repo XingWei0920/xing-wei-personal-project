@@ -67,21 +67,9 @@ describe("/api/article/:article_id", () => {
           votes: 100,
           article_img_url:
             "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-        }));
-        
-        response.body.article.forEach((article) => {
-          expect(typeof article.author).toBe("string");
-          expect(typeof article.title).toBe("string");
-          expect(typeof article.article_id).toBe("number");
-          expect(typeof article.body).toBe("string");
-          expect(typeof article.topic).toBe("string");
-          expect(typeof article.created_at).toBe("string");
-          expect(typeof article.votes).toBe("number");
-          expect(typeof article.article_img_url).toBe("string");
-          
+        }));          
         });
       });
-  });
 
   test("GET:404 sends an NOT FOUND error if the article_id does not exist", () => {
     return request(app)
@@ -89,6 +77,15 @@ describe("/api/article/:article_id", () => {
       .expect(404)
       .then((response) => {
         expect(response.body.msg).toBe("not found");
+      });
+  });
+
+  test("GET:404 sends an Bad Request error if the article_id is not a number", () => {
+    return request(app)
+      .get("/api/articles/banana")
+      .expect(400)
+      .then((response) => {
+        expect(response.body.msg).toBe("Bad Request");
       });
   });
 
