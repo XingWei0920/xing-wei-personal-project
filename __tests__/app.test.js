@@ -2,7 +2,9 @@ const app = require("../app");
 const request = require("supertest");
 const db = require("../db/connection");
 const seed = require("../db/seeds/seed");
+const endpoints= require("../endpoints.json")
 const { articleData, commentData, topicData, userData } = require("../db/data/test-data/index");
+
 
 
 beforeEach(() => seed({ articleData, commentData, topicData, userData }));
@@ -44,6 +46,18 @@ describe("/api/topics", () => {
       .expect(404)
       .then((response) => {
         expect(response.body.msg).toBe("path not found");
+      });
+  });
+})
+
+describe("/api", () => {
+  test("GET:200 sends an object with all endpoints information", () => {
+    return request(app)
+      .get("/api")
+      .expect(200)
+      .then((response) => {
+        expect(typeof response.body).toBe('object')
+        expect(response.body).toEqual(endpoints);
       });
   });
 
