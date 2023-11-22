@@ -10,3 +10,13 @@ exports.selectTopics = (req, res, next) => {
         return result.rows;
       });
 }
+
+exports.selectCommentsByArticleId = (article_id) => {
+
+    let queryString =
+    "SELECT comments.comment_id, comments.votes, comments.article_id, comments.author, comments.created_at, comments.body FROM comments WHERE article_id=$1;";
+
+    return db.query(queryString,[article_id]).then((result) => {
+        return result.rows;
+      });
+}
