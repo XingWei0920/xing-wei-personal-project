@@ -63,10 +63,9 @@ exports.patchArticleById= (req, res, next) => {
     const newVote=req.body
     const {article_id}=req.params
     const commentPromise=[updateArticleById(newVote,article_id)]
-    if (article_id)
-    {
+        
         commentPromise.push(checkArticle_idExists(article_id))
-    }
+    
     Promise.all(commentPromise)
     .then((resolvedPromises)=>{
         const article=resolvedPromises[0]

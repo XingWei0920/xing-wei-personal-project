@@ -224,7 +224,7 @@ describe("/api/articles/:article_id/comments", () => {
 
   describe("/api/articles/:article_id", () => {
     test("PATCH:200 update an specific article's vote property", () => {
-      const newVote={inc_vote:20}
+      const newVote={inc_votes:20}
       return request(app)
         .patch("/api/articles/1")
         .expect(200)
@@ -256,6 +256,17 @@ describe("/api/articles/:article_id/comments", () => {
         .expect(404)
         .then((response) => {
           expect(response.body.msg).toBe("Not Found");
+        });
+     });
+
+     test("GET:404 sends an BAd Request error if the request body is not complete", () => {
+      const newVote={inc_votes:'string'}
+      return request(app)
+        .patch("/api/articles/1")
+        .expect(400)
+        .send(newVote)
+        .then((response) => {
+          expect(response.body.msg).toBe("Bad Request");
         });
      });
   })  

@@ -51,10 +51,10 @@ exports.selectArticleById= (article_id) => {
 }
 
 exports.updateArticleById= (newVote,article_id) => {
-    const {inc_vote}=newVote
+    const {inc_votes}=newVote
     const queryString =
     "UPDATE articles SET votes = $1 WHERE article_id = $2 RETURNING *";
-    return db.query(queryString,[inc_vote,article_id]).then((result) => {
+    return db.query(queryString,[inc_votes,article_id]).then((result) => {
         return result.rows[0]
       });
 }
