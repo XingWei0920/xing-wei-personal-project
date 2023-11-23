@@ -1,7 +1,9 @@
 const {
-    selectTopics,selectArticles, selectArticleById,
+    selectTopics,selectArticles, selectArticleById,addNewComment
   } = require("../models/server-models");
-  const endpoints= require("../endpoints.json")
+  const endpoints= require("../endpoints.json");
+const { addComment } = require("@babel/types");
+const { getConsoleOutput } = require("@jest/console");
 
 exports.getTopics = (req, res, next) => {
     selectTopics()
@@ -38,5 +40,15 @@ exports.getArticleById= (req, res, next) => {
     .catch(next)
 }
 
+exports.postCommentsByArticleId = (req, res, next) => {
+        const {article_id}=req.params
+        const newComment=req.body
+        addNewComment(newComment,article_id)
+        .then((comment)=>{
+            res.status(201).send({comment});
+        })
+        .catch(next)
+    }
+    
 
   

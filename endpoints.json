@@ -25,5 +25,21 @@
         }
       ]
     }
+  },
+  "POST /api/articles/:article_id/comments": {
+    "description": "post a comment for an article",
+    "queries": ["rticle_id"],
+    "exampleResponse": {
+      "comment": [
+        {
+          "comment_id": 19,
+          "body": "This is an excellent article",
+          "article_id": 1,
+          "author": "lurker",
+          "votes": 0,
+          "created_at": "2023-11-23T13:14:03.012Z"
+        }
+      ]
+    }
   }
 }
