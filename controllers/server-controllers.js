@@ -60,7 +60,7 @@ exports.getArticleById= (req, res, next) => {
 }
 
 exports.patchArticleById= (req, res, next) => {
-    newVote=req.body
+    const newVote=req.body
     const {article_id}=req.params
     const commentPromise=[updateArticleById(newVote,article_id)]
     if (article_id)
