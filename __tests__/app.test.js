@@ -84,10 +84,9 @@ describe("/api/articles/:article_id/comments", () => {
 
   test("GET:200 sends an array of all article objects sorted by date in descending order", () => {
     return request(app)
-      .get("api/articles/1/comments")
+      .get("/api/articles/1/comments")
       .expect(200)
       .then((response) => {
-        console.log(response.body.comments)
           expect(response.body.comments).toBeSortedBy('created_at',{descending: true})
         });
       });
@@ -99,6 +98,15 @@ describe("/api/articles/:article_id/comments", () => {
       .then((response) => {
         expect(response.body.msg).toBe("path not found");
       });
+    });
+
+  test("GET:400 sends an Bad Request error if there is not a valid article_id", () => {
+     return request(app)
+       .get("/api/articles/banana/comments")
+       .expect(400)
+       .then((response) => {
+         expect(response.body.msg).toBe("Bad Request");
+       });
     });
 
      
