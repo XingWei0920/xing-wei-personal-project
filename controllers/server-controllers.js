@@ -1,7 +1,8 @@
 const {
     selectTopics,selectCommentsByArticleId,
   } = require("../models/server-models");
-  const endpoints= require("../endpoints.json")
+  const endpoints= require("../endpoints.json");
+const { getConsoleOutput } = require("@jest/console");
 
 exports.getTopics = (req, res, next) => {
     selectTopics()
