@@ -50,7 +50,7 @@ exports.postCommentsByArticleId = (req, res, next) => {
         {
             commentPromise.push(checkArticle_idExists(article_id))
         }
-        return Promise.all(commentPromise)
+        Promise.all(commentPromise)
         .then((resolvedPromises)=>{
             
             const comment=resolvedPromises[0]
