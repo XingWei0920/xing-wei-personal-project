@@ -156,3 +156,71 @@ describe("/api/article/:article_id", () => {
 
 })
 
+
+})
+
+describe("/api/articles/:article_id/comments", () => {
+  test("GET:200 sends an array of all comment objects for a specific article_id with required properties", () => {
+    return request(app)
+      .get("/api/articles/1/comments")
+      .expect(200)
+      .then((response) => {
+        expect(response.body.comments.length).toBe(11);
+        response.body.comments.forEach((comment) => {
+          expect(typeof comment.comment_id).toBe("number");
+          expect(typeof comment.votes).toBe("number");
+          expect(typeof comment.created_at).toBe("string");
+          expect(typeof comment.author).toBe("string");
+          expect(typeof comment.body).toBe("string");
+          expect(comment.article_id).toBe(1);
+        });
+      });
+  });
+
+
+  test("GET:200 sends an array of all article objects sorted by date in descending order", () => {
+    return request(app)
+      .get("/api/articles/1/comments")
+      .expect(200)
+      .then((response) => {
+          expect(response.body.comments).toBeSortedBy('created_at',{descending: true})
+        });
+      });
+ 
+  test("GET:404 sends an NOT FOUND error if there is an invalid endpoint", () => {
+    return request(app)
+      .get("/api/notapath")
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).toBe("path not found");
+      });
+    });
+
+  test("GET:400 sends an Bad Request error if there is not a valid article_id", () => {
+     return request(app)
+       .get("/api/articles/banana/comments")
+       .expect(400)
+       .then((response) => {
+         expect(response.body.msg).toBe("Bad Request");
+       });
+    });
+
+    test("GET:404 sends an not found error if the article_id does not exist", () => {
+      return request(app)
+        .get("/api/articles/999/comments")
+        .expect(404)
+        .then((response) => {
+          expect(response.body.msg).toBe("Not Found");
+        });
+   });
+
+   test("GET:200 sends an empty array if the article_id exists but there is no comments releated", () => {
+    return request(app)
+      .get("/api/articles/2/comments")
+      .expect(200)
+      .then((response) => {
+        expect(response.body.comments).toEqual([]);
+      });
+   });
+  });
+
