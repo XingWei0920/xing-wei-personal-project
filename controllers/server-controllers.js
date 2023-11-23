@@ -41,24 +41,36 @@ exports.getArticleById= (req, res, next) => {
     .catch(next)
 }
 
+// exports.postCommentsByArticleId = (req, res, next) => {
+//         const {article_id}=req.params
+//         const newComment=req.body
+//         if (article_id)
+//         {
+//             return checkArticle_idExists(article_id)
+//             .then (()=>{
+//                 return checkUsernameExists(newComment.author)
+//             })
+//             .then(()=>{
+//                 return addNewComment(newComment,article_id)})
+//             .then((comment)=>{
+//                 res.status(201).send({comment});
+//             })
+//             .catch(next)
+//         }
+// }
+
 exports.postCommentsByArticleId = (req, res, next) => {
-        const {article_id}=req.params
-        const newComment=req.body
-        if (article_id)
-        {
-            return checkArticle_idExists(article_id)
-            .then (()=>{
-                return checkUsernameExists(newComment.author)
-            })
-            .then(()=>{
-                return addNewComment(newComment,article_id)})
-            .then((comment)=>{
-                res.status(201).send({comment});
-            })
-            .catch(next)
-        }
-        
-    }
+    const {article_id}=req.params
+    const newComment=req.body
+    const promises=[checkArticle_idExists(article_id),checkUsernameExists(newComment.author),addNewComment(newComment,article_id)]
+        Promise.all(promises)
+        .then((result)=>{
+            comment=result[2]
+            res.status(201).send({comment});
+        })
+        .catch(next)   
+}
+
     
 
     
