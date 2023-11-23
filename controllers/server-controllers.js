@@ -1,11 +1,11 @@
-const {
 
-    selectTopics,selectCommentsByArticleId, selectArticles, selectArticleById, updateArticleById
+
+const {
+    selectTopics,selectCommentsByArticleId, selectArticles, selectArticleById, updateArticleById, addNewComment
   } = require("../models/server-models");
   const endpoints= require("../endpoints.json");
-  const {
-    checkArticle_idExists,
-  } = require("../models/articles-models");
+
+  const{checkArticle_idExists, checkUsernameExists}=require("../models/articles-models")
 
 
 exports.getTopics = (req, res, next) => {
@@ -59,6 +59,21 @@ exports.getArticleById= (req, res, next) => {
     .catch(next)
 }
 
+
+exports.postCommentsByArticleId = (req, res, next) => {
+    const {article_id}=req.params
+    const newComment=req.body
+    const promises=[checkArticle_idExists(article_id),checkUsernameExists(newComment.author),addNewComment(newComment,article_id)]
+        Promise.all(promises)
+        .then((result)=>{
+            comment=result[2]
+            res.status(201).send({comment});
+        })
+        .catch(next)   
+}
+
+    
+
 exports.patchArticleById= (req, res, next) => {
     const newVote=req.body
     const {article_id}=req.params
@@ -76,4 +91,5 @@ exports.patchArticleById= (req, res, next) => {
 
 
 
-  
+
+    

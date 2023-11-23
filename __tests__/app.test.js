@@ -114,7 +114,7 @@ describe("/api/articles", () => {
   });
 })
 
-describe("/api/article/:article_id", () => {
+describe("GET /api/article/:article_id", () => {
   test("GET:200 sends an the article object with articel_id", () => {
     return request(app)
       .get("/api/articles/1")
@@ -155,6 +155,73 @@ describe("/api/article/:article_id", () => {
   });
 
 })
+
+
+describe("POST /api/articles/:article_id/comments", () => {
+  test("GET:201 post a comment into the comments table for a specific article", () => {
+      const newComment={author: 'lurker',
+      body: 'This is an excellent article',}
+    return request(app)
+      .post("/api/articles/1/comments")
+      .expect(201)
+      .send(newComment)
+      .then((response) => {
+        
+          expect(response.body.comment.author).toBe('lurker');
+          expect(response.body.comment.body).toBe("This is an excellent article");
+          expect(response.body.comment.article_id).toBe(1);
+      });
+  });
+
+  test("GET:400 post a comment into the comments table with a invalid article_id", () => {
+    const newComment={author: 'lurker',
+    body: 'This is an excellent article',}
+    return request(app)
+      .post("/api/articles/banana/comments")
+      .send(newComment)
+      .expect(400)
+    .then((response) => {
+      
+      expect(response.body.msg).toBe("Bad Request");
+    });
+   });
+
+   test("GET:404 post a comment into the comments table with a article_id which does not exists", () => {
+    const newComment={author: 'lurker',
+    body: 'This is an excellent article',}
+    return request(app)
+      .post("/api/articles/999/comments")
+      .send(newComment)
+      .expect(404)
+    .then((response) => {
+      
+      expect(response.body.msg).toBe("Not Found");
+    });
+  })
+  test("GET:400 post a comment into the comments table with an imcomplete request body", () => {
+    const newComment={author: 'lurker'}
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send(newComment)
+      .expect(400)
+    .then((response) => {
+      
+      expect(response.body.msg).toBe("Bad Request");
+    });
+ }); 
+ test("GET:404 post a comment into the comments table with an username which does not exist", () => {
+  const newComment={author: 'xing_wei',
+  body: 'This is an excellent article',}
+  return request(app)
+    .post("/api/articles/1/comments")
+    .send(newComment)
+    .expect(404)
+  .then((response) => {
+    
+    expect(response.body.msg).toBe("Not Found");
+  });
+}); 
+  });
 
 
 describe("/api/articles/:article_id/comments", () => {
@@ -270,4 +337,5 @@ describe("/api/articles/:article_id/comments", () => {
         });
      });
   })  
+
 

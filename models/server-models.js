@@ -50,6 +50,20 @@ exports.selectArticleById= (article_id) => {
       });
 }
 
+
+exports.addNewComment= (newComment,article_id) => {
+    
+    const {author, body}=newComment
+    const queryString='INSERT INTO comments (body, author, article_id) VALUES ($1, $2, $3) RETURNING *;'
+  
+    return db.query(queryString,[body, author, article_id])
+    .then((result)=>{
+        
+        return result.rows[0]
+    })
+    
+}
+
 exports.updateArticleById= (newVote,article_id) => {
     const {inc_votes}=newVote
     const queryString =
@@ -58,3 +72,4 @@ exports.updateArticleById= (newVote,article_id) => {
         return result.rows[0]
       });
 }
+

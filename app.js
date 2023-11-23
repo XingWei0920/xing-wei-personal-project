@@ -1,6 +1,9 @@
 const express = require('express');
 
-const { getTopics, handleFourOhFour, getAllEndpoints, getCommentsByArticleId, getArticles, getArticleById,patchArticleById  } = require('./controllers/server-controllers');
+
+
+const { getTopics, handleFourOhFour, getAllEndpoints, getCommentsByArticleId, getArticles, getArticleById, patchArticleById  } = require('./controllers/server-controllers');
+
 
 const { handleCustomErrors, handlePsqErrors} = require('./errors/errors');
 
@@ -15,6 +18,8 @@ app.get('/api',getAllEndpoints)
 app.get('/api/articles', getArticles);
 
 app.get('/api/articles/:article_id', getArticleById);
+app.post('/api/articles/:article_id/comments',postCommentsByArticleId);
+
 
 app.get('/api/articles/:article_id/comments', getCommentsByArticleId);
 
