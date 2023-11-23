@@ -250,7 +250,7 @@ describe("/api/articles/:article_id/comments", () => {
         });
      });
 
-     test("GET:400 sends an Not Found error if the article_id does not exists", () => {
+     test("GET:404 sends an Not Found error if the article_id does not exists", () => {
       return request(app)
         .patch("/api/articles/99")
         .expect(404)
