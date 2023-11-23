@@ -2,7 +2,7 @@ const express = require('express');
 
 
 
-const { getTopics, handleFourOhFour, getAllEndpoints, getCommentsByArticleId, getArticles, getArticleById, patchArticleById  } = require('./controllers/server-controllers');
+const { getTopics, handleFourOhFour, getAllEndpoints, getCommentsByArticleId, getArticles, getArticleById, patchArticleById,postCommentsByArticleId  } = require('./controllers/server-controllers');
 
 
 const { handleCustomErrors, handlePsqErrors} = require('./errors/errors');

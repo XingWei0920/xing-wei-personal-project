@@ -42,7 +42,7 @@
         }
       ]
     }
-  }
+  },
 
  "GET /api/articles/:article_id/comments": {
     "description": "serves an array of commets for a specific article with a descending order of created_at",
