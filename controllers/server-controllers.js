@@ -43,12 +43,18 @@ exports.getArticleById= (req, res, next) => {
 exports.postCommentsByArticleId = (req, res, next) => {
         const {article_id}=req.params
         const newComment=req.body
-        addNewComment(newComment,article_id)
-        .then((comment)=>{
+        const commentPromise=[addNewComment(newComment,article_id)]
+        if (article_id)
+        {
+            commentPromise.push(checkArticle_idExists(article_id))
+        }
+        Promise.all(commentPromise)
+        .then((resolvedPromises)=>{
+            const comment=resolvedPromises[0]
             res.status(201).send({comment});
         })
         .catch(next)
     }
     
 
-  
+    
