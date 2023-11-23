@@ -1,5 +1,7 @@
+
+
 const {
-    selectTopics,selectArticles, selectArticleById,addNewComment
+    selectTopics,selectCommentsByArticleId, selectArticles, selectArticleById, updateArticleById, addNewComment
   } = require("../models/server-models");
   const endpoints= require("../endpoints.json");
 
@@ -24,6 +26,22 @@ exports.handleFourOhFour = (req, res) => {
 }
 
 
+exports.getCommentsByArticleId = (req, res, next) => {
+    const {article_id}=req.params
+    const commentPromise=[selectCommentsByArticleId(article_id)]
+    if (article_id)
+    {
+        commentPromise.push(checkArticle_idExists(article_id))
+    }
+    Promise.all(commentPromise)
+    .then((resolvedPromises)=>{
+        const comments=resolvedPromises[0]
+        res.status(200).send({comments});
+    })
+    .catch(next)
+}
+
+
 exports.getArticles= (req, res, next) => {
     selectArticles()
     .then((articles)=>{
@@ -41,6 +59,7 @@ exports.getArticleById= (req, res, next) => {
     .catch(next)
 }
 
+
 exports.postCommentsByArticleId = (req, res, next) => {
     const {article_id}=req.params
     const newComment=req.body
@@ -54,5 +73,23 @@ exports.postCommentsByArticleId = (req, res, next) => {
 }
 
     
+
+exports.patchArticleById= (req, res, next) => {
+    const newVote=req.body
+    const {article_id}=req.params
+    const commentPromise=[updateArticleById(newVote,article_id)]
+        
+        commentPromise.push(checkArticle_idExists(article_id))
+    
+    Promise.all(commentPromise)
+    .then((resolvedPromises)=>{
+        const article=resolvedPromises[0]
+        res.status(200).send({article});
+    })
+    .catch(next)
+}
+
+
+
 
     
