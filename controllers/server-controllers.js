@@ -2,7 +2,10 @@ const {
     selectTopics,selectCommentsByArticleId,
   } = require("../models/server-models");
   const endpoints= require("../endpoints.json");
-const { getConsoleOutput } = require("@jest/console");
+  const {
+    checkArticle_idExists,
+  } = require("../models/articles-models");
+
 
 exports.getTopics = (req, res, next) => {
     selectTopics()
@@ -23,8 +26,14 @@ exports.handleFourOhFour = (req, res) => {
 
 exports.getCommentsByArticleId = (req, res, next) => {
     const {article_id}=req.params
-    selectCommentsByArticleId(article_id)
-    .then((comments)=>{
+    const commentPromise=[selectCommentsByArticleId(article_id)]
+    if (article_id)
+    {
+        commentPromise.push(checkArticle_idExists(article_id))
+    }
+    Promise.all(commentPromise)
+    .then((resolvedPromises)=>{
+        const comments=resolvedPromises[0]
         res.status(200).send({comments});
     })
     .catch(next)

@@ -1,4 +1,5 @@
 
+
 const db = require("../db/connection");
 const fs = require('fs/promises')
 
@@ -20,3 +21,4 @@ exports.selectCommentsByArticleId = (article_id) => {
         return result.rows;
       });
 }
+

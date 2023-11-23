@@ -76,7 +76,7 @@ describe("/api/articles/:article_id/comments", () => {
           expect(typeof comment.created_at).toBe("string");
           expect(typeof comment.author).toBe("string");
           expect(typeof comment.body).toBe("string");
-          expect(typeof comment.article_id).toBe("number");
+          expect(comment.article_id).toBe(1);
         });
       });
   });
@@ -108,6 +108,25 @@ describe("/api/articles/:article_id/comments", () => {
          expect(response.body.msg).toBe("Bad Request");
        });
     });
+
+    test("GET:404 sends an not found error if the article_id does not exist", () => {
+      return request(app)
+        .get("/api/articles/999/comments")
+        .expect(404)
+        .then((response) => {
+          expect(response.body.msg).toBe("Not Found");
+        });
+   });
+
+   test("GET:200 sends an empty array if the article_id exists but there is no comments releated", () => {
+    return request(app)
+      .get("/api/articles/2/comments")
+      .expect(200)
+      .then((response) => {
+        expect(response.body.comments).toEqual([]);
+      });
+   });
+    
 
      
   });
