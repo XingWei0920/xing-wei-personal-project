@@ -259,7 +259,7 @@ describe("/api/articles/:article_id/comments", () => {
         });
      });
 
-     test("GET:404 sends an BAd Request error if the request body is not complete", () => {
+     test("GET:400 sends an Bad Request error if the request body is not complete", () => {
       const newVote={inc_votes:'string'}
       return request(app)
         .patch("/api/articles/1")
