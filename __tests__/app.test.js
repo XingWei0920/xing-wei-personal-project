@@ -222,3 +222,52 @@ describe("/api/articles/:article_id/comments", () => {
    });
   });
 
+  describe("/api/articles/:article_id", () => {
+    test("PATCH:200 update an specific article's vote property", () => {
+      const newVote={inc_votes:20}
+      return request(app)
+        .patch("/api/articles/1")
+        .expect(200)
+        .send(newVote)
+        .then((response) => {       
+            expect(typeof response.body.article.topic).toBe("string");
+            expect(typeof response.body.article.title).toBe("string");
+            expect(typeof response.body.article.article_img_url).toBe("string");
+            expect(response.body.article.votes).toBe(20);
+            expect(typeof response.body.article.created_at).toBe("string");
+            expect(typeof response.body.article.author).toBe("string");
+            expect(typeof response.body.article.body).toBe("string");
+            expect(response.body.article.article_id).toBe(1);
+        });
+    });
+
+    test("GET:400 sends an Bad Request error if there is not a valid article_id", () => {
+      return request(app)
+        .patch("/api/articles/banana")
+        .expect(400)
+        .then((response) => {
+          expect(response.body.msg).toBe("Bad Request");
+        });
+     });
+
+     test("GET:404 sends an Not Found error if the article_id does not exists", () => {
+      return request(app)
+        .patch("/api/articles/99")
+        .expect(404)
+        .then((response) => {
+          expect(response.body.msg).toBe("Not Found");
+        });
+     });
+
+     test("GET:400 sends an Bad Request error if the request body is not complete", () => {
+      const newVote={inc_votes:'string'}
+      return request(app)
+        .patch("/api/articles/1")
+        .expect(400)
+        .send(newVote)
+        .then((response) => {
+          expect(response.body.msg).toBe("Bad Request");
+        });
+     });
+  })  
+
