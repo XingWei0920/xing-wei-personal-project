@@ -1,7 +1,7 @@
 
 
 const {
-    selectTopics,selectCommentsByArticleId, selectArticles, selectArticleById, updateArticleById, addNewComment,
+    selectTopics,selectCommentsByArticleId, selectArticles, selectArticleById, updateArticleById, addNewComment,removeCommentById
   } = require("../models/server-models");
   const endpoints = require("../endpoints.json");
 
@@ -88,6 +88,14 @@ exports.patchArticleById= (req, res, next) => {
         res.status(200).send({article});
     })
     .catch(next)
+}
+
+exports.deleteCommentById = (req, res, next) => {
+    const {comment_id } = req.params;
+    removeCommentById(comment_id).then(() => {
+    res.status(204).send();
+  }).catch((err)=>{next(err)});
+    
 }
 
 
