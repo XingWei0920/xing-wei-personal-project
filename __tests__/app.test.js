@@ -362,3 +362,61 @@ describe("/api/articles/:article_id/comments", () => {
       });
   });
 });
+
+describe("GET /api/articles?topic=topicName", () => {
+  test("GET:200 sends the article objects with the same topic", () => {
+    return request(app)
+      .get("/api/articles?topic=cats")
+      .expect(200)
+      .then((response) => { 
+        //console.log(response.body.articles)
+        expect(response.body.articles.length).toBe(1);
+        response.body.articles.forEach((article) => {
+          expect(typeof article.title).toBe("string");
+          expect(typeof article.author).toBe("string");
+          expect(typeof article.created_at).toBe("string");
+          expect(typeof article.body).toBe("string");
+          expect(typeof article.article_img_url).toBe("string");
+          expect(article.topic).toBe("cats");
+        });         
+        });
+});
+
+test("GET:200 sends all the article objects ", () => {
+  return request(app)
+    .get("/api/articles")
+    .expect(200)
+    .then((response) => { 
+      //console.log(response.body.articles)
+      expect(response.body.articles.length).toBe(13);
+      response.body.articles.forEach((article) => {
+        expect(typeof article.title).toBe("string");
+        expect(typeof article.author).toBe("string");
+        expect(typeof article.created_at).toBe("string");
+        expect(typeof article.body).toBe("string");
+        expect(typeof article.article_img_url).toBe("string");
+        expect(typeof article.topic).toBe("string");
+      });         
+      });
+    });
+
+
+  test("GET:404 sends an NOT FOUND error if the topic does not exist", () => {
+    return request(app)
+      .get("/api/articles?topic=banana")
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).toBe("not found");
+      });
+  });
+
+  test("GET:404 sends an Bad Request error if the article_id is not a number", () => {
+    return request(app)
+      .get("/api/articles/banana")
+      .expect(400)
+      .then((response) => {
+        expect(response.body.msg).toBe("Bad Request");
+      });
+  });
+
+})

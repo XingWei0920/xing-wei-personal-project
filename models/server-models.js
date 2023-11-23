@@ -83,3 +83,40 @@ exports.removeCommentById = (comment_id) =>
     }
   });
 }
+
+exports.selectArticlesByTopic = (topic) => {
+    
+    if (topic !== undefined)
+    {
+        const queryString =
+        "SELECT * FROM articles WHERE topic = $1;";
+        return db.query(queryString,[topic])
+        .then((result) => {
+            if(!result.rows.length)
+            {
+                return Promise.reject({status: 404, msg:"not found"})
+            }
+            else
+            {
+                return result.rows;
+            }
+          });
+    }
+    else
+    {
+        const queryString =
+        "SELECT * FROM articles;"
+        return db.query(queryString)
+        .then((result) => {
+            if(!result.rows.length)
+            {
+                return Promise.reject({status: 404, msg:"not found"})
+            }
+            else
+            {
+                return result.rows;
+            }
+          });
+    
+    }
+}
