@@ -3,7 +3,8 @@
 const {
     selectTopics,selectCommentsByArticleId, selectArticles, selectArticleById, updateArticleById, addNewComment
   } = require("../models/server-models");
-  const endpoints= require("../endpoints.json");
+  const {endpoints} = require("../endpoints.json");
+
 
   const{checkArticle_idExists, checkUsernameExists}=require("../models/articles-models")
 
