@@ -2,8 +2,9 @@ const {
     selectTopics,selectArticles, selectArticleById,addNewComment
   } = require("../models/server-models");
   const endpoints= require("../endpoints.json");
-const { addComment } = require("@babel/types");
-const { getConsoleOutput } = require("@jest/console");
+
+  const{checkArticle_idExists}=require("../models/articles-models")
+
 
 exports.getTopics = (req, res, next) => {
     selectTopics()
@@ -43,13 +44,15 @@ exports.getArticleById= (req, res, next) => {
 exports.postCommentsByArticleId = (req, res, next) => {
         const {article_id}=req.params
         const newComment=req.body
+        console.log(article_id)
         const commentPromise=[addNewComment(newComment,article_id)]
         if (article_id)
         {
             commentPromise.push(checkArticle_idExists(article_id))
         }
-        Promise.all(commentPromise)
+        return Promise.all(commentPromise)
         .then((resolvedPromises)=>{
+            
             const comment=resolvedPromises[0]
             res.status(201).send({comment});
         })

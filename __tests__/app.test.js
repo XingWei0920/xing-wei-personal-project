@@ -185,5 +185,27 @@ describe("POST /api/articles/:article_id/comments", () => {
     });
    });
 
+   test.only("GET:400 post a comment into the comments table with a article_id which does not exists", () => {
+    const newComment={author: 'lurker',
+    body: 'This is an excellent article',}
+    return request(app)
+      .post("/api/articles/999/comments")
+      .send(newComment)
+      .expect(404)
+    .then((response) => {
       
+      expect(response.body.msg).toBe("Not Found");
+    });
+  })
+  test("GET:400 post a comment into the comments table with an imcomplete request body", () => {
+    const newComment={author: 'lurker'}
+    return request(app)
+      .post("/api/articles/999/comments")
+      .send(newComment)
+      .expect(400)
+    .then((response) => {
+      
+      expect(response.body.msg).toBe("Bad Request");
+    });
+ }); 
   });

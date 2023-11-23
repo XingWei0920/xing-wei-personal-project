@@ -43,6 +43,7 @@ exports.addNewComment= (newComment,article_id) => {
   
     return db.query(queryString,[body, author, article_id])
     .then((result)=>{
+        
         return result.rows[0]
     })
     
