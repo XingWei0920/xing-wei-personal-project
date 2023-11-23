@@ -185,7 +185,7 @@ describe("POST /api/articles/:article_id/comments", () => {
     });
    });
 
-   test.only("GET:400 post a comment into the comments table with a article_id which does not exists", () => {
+   test("GET:404 post a comment into the comments table with a article_id which does not exists", () => {
     const newComment={author: 'lurker',
     body: 'This is an excellent article',}
     return request(app)
@@ -200,7 +200,7 @@ describe("POST /api/articles/:article_id/comments", () => {
   test("GET:400 post a comment into the comments table with an imcomplete request body", () => {
     const newComment={author: 'lurker'}
     return request(app)
-      .post("/api/articles/999/comments")
+      .post("/api/articles/1/comments")
       .send(newComment)
       .expect(400)
     .then((response) => {
@@ -208,4 +208,16 @@ describe("POST /api/articles/:article_id/comments", () => {
       expect(response.body.msg).toBe("Bad Request");
     });
  }); 
+ test("GET:404 post a comment into the comments table with an username which does not exist", () => {
+  const newComment={author: 'xing_wei',
+  body: 'This is an excellent article',}
+  return request(app)
+    .post("/api/articles/1/comments")
+    .send(newComment)
+    .expect(404)
+  .then((response) => {
+    
+    expect(response.body.msg).toBe("Not Found");
+  });
+}); 
   });

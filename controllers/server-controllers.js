@@ -3,7 +3,7 @@ const {
   } = require("../models/server-models");
   const endpoints= require("../endpoints.json");
 
-  const{checkArticle_idExists}=require("../models/articles-models")
+  const{checkArticle_idExists, checkUsernameExists}=require("../models/articles-models")
 
 
 exports.getTopics = (req, res, next) => {
@@ -44,19 +44,20 @@ exports.getArticleById= (req, res, next) => {
 exports.postCommentsByArticleId = (req, res, next) => {
         const {article_id}=req.params
         const newComment=req.body
-        console.log(article_id)
-        const commentPromise=[addNewComment(newComment,article_id)]
         if (article_id)
         {
-            commentPromise.push(checkArticle_idExists(article_id))
+            return checkArticle_idExists(article_id)
+            .then (()=>{
+                return checkUsernameExists(newComment.author)
+            })
+            .then(()=>{
+                return addNewComment(newComment,article_id)})
+            .then((comment)=>{
+                res.status(201).send({comment});
+            })
+            .catch(next)
         }
-        Promise.all(commentPromise)
-        .then((resolvedPromises)=>{
-            
-            const comment=resolvedPromises[0]
-            res.status(201).send({comment});
-        })
-        .catch(next)
+        
     }
     
 
