@@ -157,8 +157,6 @@ describe("/api/article/:article_id", () => {
 })
 
 
-})
-
 describe("/api/articles/:article_id/comments", () => {
   test("GET:200 sends an array of all comment objects for a specific article_id with required properties", () => {
     return request(app)
