@@ -27,8 +27,8 @@
     }
   },
   "POST /api/articles/:article_id/comments": {
-    "description": "post a comment for an article",
-    "queries": ["rticle_id"],
+    "description": "post a comment for an article which should include property author and property body both in string",
+    "queries": ["article_id"],
     "exampleResponse": {
       "comment": [
         {

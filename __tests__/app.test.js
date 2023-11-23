@@ -172,7 +172,7 @@ describe("POST /api/articles/:article_id/comments", () => {
       });
   });
 
-  test("GET:201 post a comment into the comments table with a invalid article_id", () => {
+  test("GET:400 post a comment into the comments table with a invalid article_id", () => {
     const newComment={author: 'lurker',
     body: 'This is an excellent article',}
     return request(app)
