@@ -2,7 +2,7 @@ const express = require('express');
 
 
 
-const { getTopics, handleFourOhFour, getAllEndpoints, getCommentsByArticleId, getArticles, getArticleById, patchArticleById,postCommentsByArticleId,deleteCommentById  } = require('./controllers/server-controllers');
+const { getTopics, handleFourOhFour, getAllEndpoints, getCommentsByArticleId, getArticles, getArticleById, patchArticleById,postCommentsByArticleId,deleteCommentById,getUsers,  } = require('./controllers/server-controllers');
 
 
 const { handleCustomErrors, handlePsqErrors} = require('./errors/errors');
@@ -26,6 +26,8 @@ app.get('/api/articles/:article_id/comments', getCommentsByArticleId);
 app.patch('/api/articles/:article_id', patchArticleById);
 
 app.delete('/api/comments/:comment_id', deleteCommentById);
+
+app.get('/api/users', getUsers);
 
 app.use(handleCustomErrors)
 app.use(handlePsqErrors)

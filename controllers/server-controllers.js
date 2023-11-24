@@ -1,6 +1,8 @@
 
 const {
-    selectTopics,selectCommentsByArticleId, selectArticles, selectArticleById, updateArticleById, addNewComment,removeCommentById,selectArticlesByTopic
+
+    selectTopics,selectCommentsByArticleId, selectArticles, selectArticleById, updateArticleById, addNewComment,removeCommentById,selectArticlesByTopic,selectUsers
+
   } = require("../models/server-models");
   const endpoints = require("../endpoints.json");
 
@@ -100,6 +102,14 @@ exports.deleteCommentById = (req, res, next) => {
     res.status(204).send();
   }).catch((err)=>{next(err)});
     
+}
+
+exports.getUsers= (req, res, next) => {
+    selectUsers()
+    .then((users)=>{
+        res.status(200).send({users});
+    })
+    .catch(next)
 }
 
 
