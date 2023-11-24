@@ -4,8 +4,7 @@ const db = require("../db/connection");
 const seed = require("../db/seeds/seed");
 const endpoints= require("../endpoints.json");
 const { articleData, commentData, topicData, userData } = require("../db/data/test-data/index");
-const { expect } = require("@jest/globals");
-const { TextDecoderStream } = require("node:stream/web");
+
 
 
 
@@ -364,6 +363,58 @@ describe("/api/articles/:article_id/comments", () => {
 });
 
 
+describe("GET /api/articles?topic=topicName", () => {
+  test("GET:200 sends the article objects with the same topic", () => {
+    return request(app)
+      .get("/api/articles?topic=cats")
+      .expect(200)
+      .then((response) => { 
+        expect(response.body.articles.length).toBe(1);
+        response.body.articles.forEach((article) => {
+          expect(typeof article.title).toBe("string");
+          expect(typeof article.author).toBe("string");
+          expect(typeof article.created_at).toBe("string");
+          expect(typeof article.article_img_url).toBe("string");
+          expect(article.topic).toBe("cats");
+        });         
+        });
+});
+
+test("GET:200 sends an empty array when the topic does not belong to any article but exists", () => {
+  return request(app)
+    .get("/api/articles?topic=paper")
+    .expect(200)
+    .then((response) => { 
+      expect(response.body.articles.length).toBe(0);
+      });         
+      });
+});
+
+test("GET:200 sends all the article objects ", () => {
+  return request(app)
+    .get("/api/articles")
+    .expect(200)
+    .then((response) => { 
+      expect(response.body.articles.length).toBe(13);
+      response.body.articles.forEach((article) => {
+        expect(typeof article.title).toBe("string");
+        expect(typeof article.author).toBe("string");
+        expect(typeof article.created_at).toBe("string");
+        expect(typeof article.article_img_url).toBe("string");
+        expect(typeof article.topic).toBe("string");
+      });         
+      });
+    });
+
+
+  test("GET:404 sends an NOT FOUND error if the topic does not exist", () => {
+    return request(app)
+      .get("/api/articles?topic=banana")
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).toBe("Not Found");
+
+
 describe("GET /api/article/:article_id", () => {
   test("GET:200 sends the article object with articel_id", () => {
     return request(app)
@@ -401,6 +452,7 @@ describe("GET /api/article/:article_id", () => {
       .expect(200)
       .then((response) => {
         expect(response.body.article[0].comment_count).toBe(11);
+
       });
   });
 
@@ -439,3 +491,4 @@ describe("/api/users", () => {
       });
   });
 })
+

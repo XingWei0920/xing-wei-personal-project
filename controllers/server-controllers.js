@@ -1,7 +1,8 @@
 
-
 const {
-    selectTopics,selectCommentsByArticleId, selectArticles, selectArticleById, updateArticleById, addNewComment,removeCommentById,selectUsers
+
+    selectTopics,selectCommentsByArticleId, selectArticles, selectArticleById, updateArticleById, addNewComment,removeCommentById,selectArticlesByTopic,selectUsers
+
   } = require("../models/server-models");
   const endpoints = require("../endpoints.json");
 
@@ -44,12 +45,17 @@ exports.getCommentsByArticleId = (req, res, next) => {
 
 
 exports.getArticles= (req, res, next) => {
-    selectArticles()
-    .then((articles)=>{
-        res.status(200).send({articles});
-    })
-    .catch(next)
-}
+        const {topic}=req.query
+            selectArticles(topic)
+            .then((articles)=>{
+                res.status(200).send({articles});
+            })
+            .catch(next)         
+        }
+          
+        
+        
+
 
 exports.getArticleById= (req, res, next) => {
     const {article_id}=req.params

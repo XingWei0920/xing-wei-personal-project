@@ -1,5 +1,5 @@
 
-
+const{checkTopicExists}=require("./articles-models")
 const db = require("../db/connection");
 const fs = require('fs/promises');
 const { articleData } = require("../db/data/development-data");
@@ -27,14 +27,29 @@ exports.selectCommentsByArticleId = (article_id) => {
     
 
 
-exports.selectArticles = (req, res, next) => {
-    let queryString =
-    "SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(comments.article_id)::INT AS comment_count FROM articles LEFT JOIN comments ON articles.article_id=comments.article_id GROUP BY articles.article_id ORDER BY articles.created_at DESC;";
+exports.selectArticles = (topic) => {
+    let queryString=''
+    let queryString1 =
+    "SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(comments.article_id)::INT AS comment_count FROM articles LEFT JOIN comments ON articles.article_id=comments.article_id";
+    let queryString2=" GROUP BY articles.article_id ORDER BY articles.created_at DESC;";
 
-    return db.query(queryString).then((result) => {
-
-        return result.rows;
-      });
+    if (topic)
+    {   
+        queryString=queryString1+' WHERE articles.topic = $1'+queryString2;
+        return checkTopicExists(topic)
+        .then(()=>{
+            return db.query(queryString,[topic]) })
+            .then((result) => {
+                return result.rows;   
+               }); 
+    }
+    else
+    {
+        queryString=queryString1+queryString2
+        return db.query(queryString).then((result) => {
+            return result.rows;
+          });
+    } 
 }
 
 exports.selectArticleById= (article_id) => {
@@ -87,6 +102,7 @@ exports.removeCommentById = (comment_id) =>
   });
 }
 
+
 exports.selectUsers = (req, res, next) => {
     let queryString =
     "SELECT username, name, avatar_url FROM users;";
@@ -95,3 +111,4 @@ exports.selectUsers = (req, res, next) => {
         return result.rows;
       });
 }
+
