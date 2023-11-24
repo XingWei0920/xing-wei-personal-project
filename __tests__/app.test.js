@@ -388,7 +388,7 @@ test("GET:200 sends an empty array when the topic does not belong to any article
       expect(response.body.articles.length).toBe(0);
       });         
       });
-});
+
 
 test("GET:200 sends all the article objects ", () => {
   return request(app)
@@ -405,6 +405,8 @@ test("GET:200 sends all the article objects ", () => {
       });         
       });
     });
+ 
+ 
 
 
   test("GET:404 sends an NOT FOUND error if the topic does not exist", () => {
@@ -413,7 +415,10 @@ test("GET:200 sends all the article objects ", () => {
       .expect(404)
       .then((response) => {
         expect(response.body.msg).toBe("Not Found");
-
+      })
+    })
+  })
+  
 
 describe("GET /api/article/:article_id", () => {
   test("GET:200 sends the article object with articel_id", () => {
@@ -436,6 +441,7 @@ describe("GET /api/article/:article_id", () => {
         }));          
         });
       });
+    })
 
   test("GET:404 sends an NOT FOUND error if the article_id does not exist", () => {
     return request(app)
@@ -491,4 +497,3 @@ describe("/api/users", () => {
       });
   });
 })
-
