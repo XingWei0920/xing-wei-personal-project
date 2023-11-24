@@ -36,19 +36,10 @@ exports.selectArticles = (topic) => {
         queryString=queryString1+' WHERE articles.topic = $1'+queryString2;
         return checkTopicExists(topic)
         .then(()=>{
-            return db.query(queryString,[topic]).then((result) => {
-            if(!result.rows.length)
-            {
-                return ([])
-            }
-            else
-            {
-                return result.rows;
-            }
-            
-               });
-        
-            })
+            return db.query(queryString,[topic]) })
+            .then((result) => {
+                return result.rows;   
+               }); 
     }
     else
     {
