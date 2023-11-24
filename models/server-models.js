@@ -1,7 +1,9 @@
 
 
 const db = require("../db/connection");
-const fs = require('fs/promises')
+const fs = require('fs/promises');
+const { articleData } = require("../db/data/development-data");
+const articles = require("../db/data/development-data/articles");
 
 exports.selectTopics = () => {
     let queryString =
@@ -36,8 +38,9 @@ exports.selectArticles = (req, res, next) => {
 }
 
 exports.selectArticleById= (article_id) => {
+
     const queryString =
-    "SELECT * FROM articles WHERE article_id = $1;";
+    "SELECT articles.*, COUNT(comments.article_id)::INT AS comment_count FROM articles LEFT JOIN comments ON articles.article_id=comments.article_id WHERE articles.article_id = $1 GROUP BY articles.article_id";
     return db.query(queryString,[article_id]).then((result) => {
         if(!result.rows.length)
         {
