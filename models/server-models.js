@@ -83,3 +83,12 @@ exports.removeCommentById = (comment_id) =>
     }
   });
 }
+
+exports.selectUsers = (req, res, next) => {
+    let queryString =
+    "SELECT username, name, avatar_url FROM users;";
+    return db.query(queryString)
+    .then((result) => {
+        return result.rows;
+      });
+}

@@ -362,3 +362,29 @@ describe("/api/articles/:article_id/comments", () => {
       });
   });
 });
+
+describe("/api/users", () => {
+  test("GET:200 sends an array of all user objects with required properties", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then((response) => {
+        expect(response.body.users.length).toBe(4);
+        response.body.users.forEach((user) => {
+          expect(typeof user.username).toBe("string");
+          expect(typeof user.name).toBe("string");
+          expect(typeof user.avatar_url).toBe("string");
+        });
+      });
+  });
+
+
+  test("GET:404 sends an NOT FOUND error if there is an invalid endpoint", () => {
+    return request(app)
+      .get("/api/notapath")
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).toBe("path not found");
+      });
+  });
+})
