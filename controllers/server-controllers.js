@@ -44,14 +44,29 @@ exports.getCommentsByArticleId = (req, res, next) => {
 
 
 exports.getArticles= (req, res, next) => {
-        const {topic}=req.query||undefined
-        console.log(topic)
-        selectArticlesByTopic(topic)
-        .then((articles)=>{
-            res.status(200).send({articles});
-        })
-        .catch(next)
-}
+        const {topic}=req.query
+        if (topic)
+        {
+            selectArticles(topic)
+            .then((articles)=>{
+                res.status(200).send({articles});
+            })
+            .catch(next)
+        }
+        else
+        {
+            selectArticles()
+            .then((articles)=>{
+               res.status(200).send({articles});
+           })
+           .catch(next)
+        }
+         
+        }
+          
+        
+        
+
 
 exports.getArticleById= (req, res, next) => {
     const {article_id}=req.params

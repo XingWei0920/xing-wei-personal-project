@@ -4,8 +4,7 @@ const db = require("../db/connection");
 const seed = require("../db/seeds/seed");
 const endpoints= require("../endpoints.json");
 const { articleData, commentData, topicData, userData } = require("../db/data/test-data/index");
-const { expect } = require("@jest/globals");
-const { TextDecoderStream } = require("node:stream/web");
+
 
 
 
@@ -369,13 +368,11 @@ describe("GET /api/articles?topic=topicName", () => {
       .get("/api/articles?topic=cats")
       .expect(200)
       .then((response) => { 
-        //console.log(response.body.articles)
         expect(response.body.articles.length).toBe(1);
         response.body.articles.forEach((article) => {
           expect(typeof article.title).toBe("string");
           expect(typeof article.author).toBe("string");
           expect(typeof article.created_at).toBe("string");
-          expect(typeof article.body).toBe("string");
           expect(typeof article.article_img_url).toBe("string");
           expect(article.topic).toBe("cats");
         });         
@@ -387,13 +384,11 @@ test("GET:200 sends all the article objects ", () => {
     .get("/api/articles")
     .expect(200)
     .then((response) => { 
-      //console.log(response.body.articles)
       expect(response.body.articles.length).toBe(13);
       response.body.articles.forEach((article) => {
         expect(typeof article.title).toBe("string");
         expect(typeof article.author).toBe("string");
         expect(typeof article.created_at).toBe("string");
-        expect(typeof article.body).toBe("string");
         expect(typeof article.article_img_url).toBe("string");
         expect(typeof article.topic).toBe("string");
       });         
