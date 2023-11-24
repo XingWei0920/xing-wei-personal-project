@@ -1,5 +1,4 @@
 
-
 const {
     selectTopics,selectCommentsByArticleId, selectArticles, selectArticleById, updateArticleById, addNewComment,removeCommentById,selectArticlesByTopic
   } = require("../models/server-models");
@@ -45,23 +44,11 @@ exports.getCommentsByArticleId = (req, res, next) => {
 
 exports.getArticles= (req, res, next) => {
         const {topic}=req.query
-        if (topic)
-        {
             selectArticles(topic)
             .then((articles)=>{
                 res.status(200).send({articles});
             })
-            .catch(next)
-        }
-        else
-        {
-            selectArticles()
-            .then((articles)=>{
-               res.status(200).send({articles});
-           })
-           .catch(next)
-        }
-         
+            .catch(next)         
         }
           
         

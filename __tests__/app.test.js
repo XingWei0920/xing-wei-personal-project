@@ -379,6 +379,16 @@ describe("GET /api/articles?topic=topicName", () => {
         });
 });
 
+test("GET:200 sends an empty array when the topic does not belong to any article but exists", () => {
+  return request(app)
+    .get("/api/articles?topic=paper")
+    .expect(200)
+    .then((response) => { 
+      expect(response.body.articles.length).toBe(0);
+      });         
+      });
+});
+
 test("GET:200 sends all the article objects ", () => {
   return request(app)
     .get("/api/articles")
@@ -401,7 +411,7 @@ test("GET:200 sends all the article objects ", () => {
       .get("/api/articles?topic=banana")
       .expect(404)
       .then((response) => {
-        expect(response.body.msg).toBe("not found");
+        expect(response.body.msg).toBe("Not Found");
       });
   });
 
@@ -414,4 +424,3 @@ test("GET:200 sends all the article objects ", () => {
       });
   });
 
-})

@@ -1,5 +1,5 @@
 
-
+const{checkTopicExists}=require("./articles-models")
 const db = require("../db/connection");
 const fs = require('fs/promises')
 
@@ -32,19 +32,23 @@ exports.selectArticles = (topic) => {
     let queryString2=" GROUP BY articles.article_id ORDER BY articles.created_at DESC;";
 
     if (topic)
-    {
-        queryString=queryString1+' WHERE articles.topic = $1'+queryString2
-        return db.query(queryString,[topic]).then((result) => {
+    {   
+        queryString=queryString1+' WHERE articles.topic = $1'+queryString2;
+        return checkTopicExists(topic)
+        .then(()=>{
+            return db.query(queryString,[topic]).then((result) => {
             if(!result.rows.length)
             {
-                return Promise.reject({status: 404, msg:"not found"})
+                return ([])
             }
             else
             {
                 return result.rows;
             }
             
-          });
+               });
+        
+            })
     }
     else
     {
