@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 
 
 
@@ -8,7 +9,7 @@ const { getTopics, handleFourOhFour, getAllEndpoints, getCommentsByArticleId, ge
 const { handleCustomErrors, handlePsqErrors} = require('./errors/errors');
 
 const app = express();
-
+app.use(cors());
 app.use(express.json());
 
 
